@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register - AI Privacy Shield</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    #123b55,
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    #092c38,
+                    transparent 35%
+                ),
+                #03080d;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 950px;
+
+            min-height: 600px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            background: rgba(7, 19, 30, .94);
+
+            border: 1px solid #17394d;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,.5);
+        }
+
+
+        /* LEFT */
+
+        .left {
+
+            padding: 50px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #09283b,
+                    #06121c
+                );
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .logo-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 15px;
+
+            background: #0b648d;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .logo-text strong {
+
+            display: block;
+
+            font-size: 16px;
+        }
+
+
+        .logo-text span {
+
+            color: #5d849b;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .left h1 {
+
+            font-size: 36px;
+
+            line-height: 1.15;
+
+            margin-bottom: 18px;
+        }
+
+
+        .left h1 span {
+
+            color: #45d7ff;
+        }
+
+
+        .left p {
+
+            color: #7893a6;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            max-width: 390px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .features {
+
+            display: grid;
+
+            gap: 12px;
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #a3b7c5;
+
+            font-size: 10px;
+        }
+
+
+        .feature-icon {
+
+            width: 32px;
+
+            height: 32px;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #0b2535;
+
+            border: 1px solid #19455e;
+        }
+
+
+        /* RIGHT */
+
+        .right {
+
+            padding: 50px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        .right h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .subtitle {
+
+            color: #617c8f;
+
+            font-size: 10px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* FLASH */
+
+        .message {
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            margin-bottom: 15px;
+
+            line-height: 1.5;
+        }
+
+
+        .message.success {
+
+            color: #4de0a4;
+
+            background: #08291f;
+
+            border: 1px solid #15583f;
+        }
+
+
+        .message.error {
+
+            color: #ff7188;
+
+            background: #320a16;
+
+            border: 1px solid #752338;
+        }
+
+
+        .form-group {
+
+            margin-bottom: 17px;
+        }
+
+
+        label {
+
+            display: block;
+
+            color: #9bb0bd;
+
+            font-size: 9px;
+
+            margin-bottom: 7px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 9px;
+
+            border: 1px solid #1a3547;
+
+            background: #07131e;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 11px;
+
+            transition: .2s;
+        }
+
+
+        input:focus {
+
+            border-color: #35c9f4;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(53,201,244,.08);
+        }
+
+
+        input::placeholder {
+
+            color: #40596b;
+        }
+
+
+        .password-box {
+
+            position: relative;
+        }
+
+
+        .password-box input {
+
+            padding-right: 45px;
+        }
+
+
+        .show-password {
+
+            position: absolute;
+
+            right: 12px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            cursor: pointer;
+
+            color: #668295;
+
+            font-size: 15px;
+        }
+
+
+        .terms {
+
+            display: flex;
+
+            gap: 8px;
+
+            align-items: flex-start;
+
+            color: #61798a;
+
+            font-size: 8px;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+        }
+
+
+        .terms input {
+
+            width: auto;
+
+            margin-top: 2px;
+        }
+
+
+        .register-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0b82ae,
+                    #13a26d
+                );
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+
+        .register-btn:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(20,150,180,.25);
+        }
+
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #627c8e;
+
+            font-size: 9px;
+        }
+
+
+        .login-link a {
+
+            color: #45d7ff;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        .security {
+
+            text-align: center;
+
+            margin-top: 28px;
+
+            color: #405c6e;
+
+            font-size: 7px;
+
+            letter-spacing: .7px;
+        }
+
+
+        @media(max-width:750px) {
+
+            .container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .left {
+
+                display: none;
+
+            }
+
+            .right {
+
+                padding: 35px 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- LEFT SIDE -->
+
+    <div class="left">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🛡️
+            </div>
+
+            <div class="logo-text">
+
+                <strong>
+                    AI Privacy Shield
+                </strong>
+
+                <span>
+                    INTELLIGENT SCREEN SECURITY
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <h1>
+
+            Protect your
+            <span>digital privacy.</span>
+
+        </h1>
+
+
+        <p>
+
+            Create your secure account and
+            activate AI-powered privacy protection
+            for your screen.
+
+        </p>
+
+
+        <div class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    👁️
+                </div>
+
+                Real-time person detection
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔒
+                </div>
+
+                Automatic screen privacy protection
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🚨
+                </div>
+
+                Instant privacy alerts
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                AI-powered computer vision
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right">
+
+
+        <h2>
+            Create Account
+        </h2>
+
+
+        <p class="subtitle">
+
+            Register to start using AI Privacy Shield.
+
+        </p>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form
+            method="POST"
+            action="{{ url_for('register') }}"
+            onsubmit="return validateForm()">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label>
+                    FULL NAME
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                    autocomplete="name">
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label>
+                    EMAIL ADDRESS
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                    autocomplete="email">
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label>
+                    PASSWORD
+                </label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Create a password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password">
+
+                    <span
+                        class="show-password"
+                        onclick="togglePassword()">
+
+                        👁
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="terms">
+
+                <input
+                    type="checkbox"
+                    id="terms"
+                    required>
+
+                <label for="terms">
+
+                    I understand that AI Privacy Shield
+                    uses camera-based person detection
+                    to provide screen privacy protection.
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="register-btn">
+
+                🛡️ CREATE SECURE ACCOUNT
+
+            </button>
+
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login here
+            </a>
+
+        </div>
+
+
+        <div class="security">
+
+            🔐 SECURE ACCOUNT • AI PRIVACY PROTECTION
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    if (
+        password.type === "password"
+    ) {
+
+        password.type = "text";
+
+    } else {
+
+        password.type = "password";
+
+    }
+
+}
+
+
+function validateForm() {
+
+    const password =
+        document.getElementById("password").value;
+
+    if (password.length < 6) {
+
+        alert(
+            "Password must be at least 6 characters."
+        );
+
+        return false;
+    }
+
+    return true;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

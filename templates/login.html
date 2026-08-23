@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login - AI Privacy Shield</title>
+
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+
+                radial-gradient(
+                    circle at 20% 20%,
+                    #123b55,
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 80% 80%,
+                    #092c38,
+                    transparent 35%
+                ),
+
+                #03080d;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 950px;
+
+            min-height: 560px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            background: rgba(7, 19, 30, .95);
+
+            border: 1px solid #17394d;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,.55);
+
+        }
+
+
+        /* LEFT */
+
+        .left {
+
+            padding: 50px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #09283b,
+                    #06121c
+                );
+
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .logo-icon {
+
+            width: 52px;
+
+            height: 52px;
+
+            border-radius: 15px;
+
+            background: #0b648d;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 26px;
+
+        }
+
+
+        .logo-text strong {
+
+            display: block;
+
+            font-size: 16px;
+
+        }
+
+
+        .logo-text span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: #5d849b;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .shield {
+
+            width: 120px;
+
+            height: 120px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #0c5676,
+                    #071a27
+                );
+
+            border: 1px solid #1d6688;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 58px;
+
+            margin-bottom: 28px;
+
+            box-shadow:
+                0 0 50px
+                rgba(30,180,220,.12);
+
+        }
+
+
+        .left h1 {
+
+            font-size: 32px;
+
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .left h1 span {
+
+            color: #45d7ff;
+
+        }
+
+
+        .left p {
+
+            max-width: 390px;
+
+            color: #7893a6;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* RIGHT */
+
+        .right {
+
+            padding: 50px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+        }
+
+
+        .right h2 {
+
+            font-size: 26px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .subtitle {
+
+            color: #617c8f;
+
+            font-size: 10px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        /* FLASH */
+
+        .message {
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .message.success {
+
+            color: #4de0a4;
+
+            background: #08291f;
+
+            border: 1px solid #15583f;
+
+        }
+
+
+        .message.error {
+
+            color: #ff7188;
+
+            background: #320a16;
+
+            border: 1px solid #752338;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            color: #9bb0bd;
+
+            font-size: 9px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 9px;
+
+            border: 1px solid #1a3547;
+
+            background: #07131e;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 11px;
+
+            transition: .2s;
+
+        }
+
+
+        input:focus {
+
+            border-color: #35c9f4;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(53,201,244,.08);
+
+        }
+
+
+        input::placeholder {
+
+            color: #40596b;
+
+        }
+
+
+        .password-box {
+
+            position: relative;
+
+        }
+
+
+        .password-box input {
+
+            padding-right: 45px;
+
+        }
+
+
+        .show-password {
+
+            position: absolute;
+
+            right: 12px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            cursor: pointer;
+
+            color: #668295;
+
+        }
+
+
+        .login-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0b82ae,
+                    #13a26d
+                );
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+
+        .login-btn:hover {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(20,150,180,.25);
+
+        }
+
+
+        .register-link {
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #627c8e;
+
+            font-size: 9px;
+
+        }
+
+
+        .register-link a {
+
+            color: #45d7ff;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+        }
+
+
+        .security {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            color: #405c6e;
+
+            font-size: 7px;
+
+            letter-spacing: .7px;
+
+        }
+
+
+        .status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 25px;
+
+            padding: 10px;
+
+            background: #071923;
+
+            border: 1px solid #123344;
+
+            border-radius: 8px;
+
+            color: #648095;
+
+            font-size: 8px;
+
+        }
+
+
+        .dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            background: #4de0a4;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 8px
+                #4de0a4;
+
+        }
+
+
+        @media(max-width:750px) {
+
+            .container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .left {
+
+                display: none;
+
+            }
+
+            .right {
+
+                padding: 35px 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- LEFT -->
+
+    <div class="left">
+
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🛡️
+            </div>
+
+            <div class="logo-text">
+
+                <strong>
+                    AI Privacy Shield
+                </strong>
+
+                <span>
+                    INTELLIGENT SCREEN SECURITY
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="shield">
+
+            🛡️
+
+        </div>
+
+
+        <h1>
+
+            Your privacy.
+            <span>Protected.</span>
+
+        </h1>
+
+
+        <p>
+
+            AI-powered real-time screen protection
+            that detects unauthorized people and
+            automatically protects your private
+            information.
+
+        </p>
+
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <div class="right">
+
+
+        <h2>
+            Welcome Back
+        </h2>
+
+
+        <p class="subtitle">
+
+            Login to access your Privacy Shield dashboard.
+
+        </p>
+
+
+        <!-- FLASH -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form
+            method="POST"
+            action="{{ url_for('login') }}">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label>
+                    EMAIL ADDRESS
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                    autocomplete="email">
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label>
+                    PASSWORD
+                </label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password">
+
+                    <span
+                        class="show-password"
+                        onclick="togglePassword()">
+
+                        👁
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                🔐 LOGIN TO PRIVACY SHIELD
+
+            </button>
+
+
+        </form>
+
+
+        <div class="register-link">
+
+            Don't have an account?
+
+            <a href="{{ url_for('register') }}">
+
+                Create Account
+
+            </a>
+
+        </div>
+
+
+        <div class="status">
+
+            <div class="dot"></div>
+
+            AI Privacy Protection System Ready
+
+        </div>
+
+
+        <div class="security">
+
+            🔐 SECURE LOGIN • AI PRIVACY PROTECTION
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    if (
+        password.type === "password"
+    ) {
+
+        password.type = "text";
+
+    } else {
+
+        password.type = "password";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

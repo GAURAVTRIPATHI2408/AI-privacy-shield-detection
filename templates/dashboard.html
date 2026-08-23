@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Privacy Shield</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #050b12;
+            color: white;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 230px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: #07131f;
+            border-right: 1px solid #173044;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #0c5d87;
+            font-size: 22px;
+        }
+
+        .logo strong {
+            font-size: 13px;
+        }
+
+        .logo small {
+            display: block;
+            color: #627b8f;
+            font-size: 8px;
+            margin-top: 3px;
+        }
+
+        .nav-title {
+            color: #4e6578;
+            font-size: 8px;
+            margin: 20px 10px 8px;
+            letter-spacing: 1px;
+        }
+
+        .nav {
+            display: block;
+            color: #8096a8;
+            text-decoration: none;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+        .nav:hover,
+        .nav.active {
+            color: #4ed8ff;
+            background: #0b2537;
+        }
+
+        .user {
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            bottom: 20px;
+            padding: 12px;
+            background: #0b1926;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+
+        .user span {
+            display: block;
+            color: #627b8f;
+            margin-top: 4px;
+        }
+
+        /* MAIN */
+
+        .main {
+            width: calc(100% - 230px);
+            margin-left: 230px;
+            padding: 25px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top small {
+            color: #4f6d82;
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        .top h1 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+
+        .system-status {
+            padding: 9px 14px;
+            border-radius: 20px;
+            background: #09271f;
+            border: 1px solid #15533f;
+            color: #4de0a4;
+            font-size: 9px;
+        }
+
+        /* HERO */
+
+        .hero {
+            background: linear-gradient(
+                110deg,
+                #0b2b42,
+                #081520
+            );
+
+            padding: 22px;
+            border-radius: 15px;
+            border: 1px solid #163a50;
+            margin-bottom: 15px;
+        }
+
+        .hero small {
+            color: #43cdf8;
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        .hero h2 {
+            margin: 8px 0;
+            font-size: 20px;
+        }
+
+        .hero p {
+            color: #7c93a5;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            background: #091622;
+            border: 1px solid #142b3c;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .stat small {
+            color: #60798c;
+            font-size: 8px;
+        }
+
+        .stat strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 23px;
+        }
+
+        .blue {
+            color: #43cdf8;
+        }
+
+        .green {
+            color: #4de0a4;
+        }
+
+        .red {
+            color: #ff617c;
+        }
+
+        /* CONTENT */
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+        }
+
+        .panel {
+            background: #08131f;
+            border: 1px solid #142a3a;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid #132837;
+        }
+
+        .panel-header small {
+            color: #43cdf8;
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        .panel-header h3 {
+            margin: 6px 0 0;
+            font-size: 14px;
+        }
+
+        /* CAMERA */
+
+        .camera-area {
+            position: relative;
+            height: 430px;
+            background: #010407;
+            overflow: hidden;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: filter .25s ease;
+        }
+
+        #video.privacy-blur {
+            filter: blur(22px);
+        }
+
+        #canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* PLACEHOLDER */
+
+        .camera-placeholder {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #102b3c,
+                    #02070c 65%
+                );
+        }
+
+        .camera-icon {
+            font-size: 55px;
+        }
+
+        .camera-placeholder h3 {
+            margin: 10px 0 5px;
+        }
+
+        .camera-placeholder p {
+            max-width: 300px;
+            color: #71899d;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .camera-start {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            background: #11895f;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* CAMERA STATUS */
+
+        .camera-status {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+
+            padding: 8px 11px;
+
+            background: rgba(0,0,0,.7);
+            border-radius: 7px;
+
+            font-size: 8px;
+            color: #7891a4;
+        }
+
+        .camera-status b {
+            color: #4de0a4;
+        }
+
+        /* SAFE / WARNING */
+
+        .safe-box {
+            position: absolute;
+            left: 50%;
+            bottom: 15px;
+            transform: translateX(-50%);
+            z-index: 10;
+
+            padding: 11px 18px;
+
+            border-radius: 9px;
+
+            background: rgba(4,35,26,.95);
+            border: 1px solid #1b604b;
+
+            color: #4de0a4;
+
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .warning-box {
+            position: absolute;
+            left: 50%;
+            bottom: 15px;
+            transform: translateX(-50%);
+            z-index: 20;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            background: rgba(65,5,20,.96);
+            border: 1px solid #a32a45;
+
+            color: #ff7188;
+
+            font-size: 10px;
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .blur-label {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            z-index: 30;
+
+            padding: 15px 25px;
+
+            border-radius: 30px;
+
+            background: rgba(100,5,25,.94);
+
+            border: 1px solid #ff526f;
+
+            color: white;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* CONTROL */
+
+        .control {
+            padding: 16px;
+        }
+
+        .engine {
+            padding: 13px;
+            border-radius: 9px;
+            background: #0a1925;
+            border: 1px solid #142d3e;
+        }
+
+        .engine strong {
+            font-size: 11px;
+        }
+
+        .engine span {
+            display: block;
+            color: #60798d;
+            font-size: 8px;
+            margin-top: 5px;
+        }
+
+        .face-panel {
+            margin-top: 12px;
+            padding: 13px;
+            border-radius: 9px;
+            background: #091722;
+            border: 1px solid #142d3e;
+        }
+
+        .face-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: #71899d;
+        }
+
+        #detectionStatus {
+            color: #4de0a4;
+        }
+
+        .face-stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .face-stat {
+            background: #0b1c29;
+            padding: 9px;
+            border-radius: 7px;
+        }
+
+        .face-stat small {
+            display: block;
+            color: #5f778a;
+            font-size: 7px;
+        }
+
+        .face-stat strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: grid;
+            gap: 8px;
+            margin-top: 13px;
+        }
+
+        .buttons button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        #startButton {
+            background: #10885e;
+        }
+
+        #stopButton {
+            background: #7b2638;
+        }
+
+        .buttons button:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        /* ALERTS */
+
+        .alerts {
+            margin-top: 15px;
+        }
+
+        .alert-list {
+            padding: 5px 16px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid #122534;
+        }
+
+        .alert-icon {
+            font-size: 18px;
+        }
+
+        .alert-info {
+            flex: 1;
+        }
+
+        .alert-info strong {
+            display: block;
+            font-size: 9px;
+        }
+
+        .alert-info span {
+            color: #61798c;
+            font-size: 8px;
+        }
+
+        .alert-time {
+            color: #50697c;
+            font-size: 7px;
+        }
+
+        @media(max-width:1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:700px) {
+
+            .sidebar {
+                width: 65px;
+            }
+
+            .logo div:last-child,
+            .nav span,
+            .nav-title,
+            .user {
+                display: none;
+            }
+
+            .main {
+                width: calc(100% - 65px);
+                margin-left: 65px;
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🛡️
+            </div>
+
+            <div>
+                <strong>AI Privacy Shield</strong>
+                <small>SECURITY CENTER</small>
+            </div>
+
+        </div>
+
+        <div class="nav-title">
+            MAIN MENU
+        </div>
+
+        <a href="#dashboard"
+           class="nav active">
+
+            ◈ <span>Dashboard</span>
+
+        </a>
+
+        <a href="#monitor"
+           class="nav">
+
+            ◉ <span>Live Monitor</span>
+
+        </a>
+
+        <a href="#alerts"
+           class="nav">
+
+            ⚠ <span>Privacy Alerts</span>
+
+        </a>
+
+        <div class="nav-title">
+            SYSTEM
+        </div>
+
+        <a href="#ai"
+           class="nav">
+
+            🧠 <span>AI Engine</span>
+
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="nav">
+
+            🚪 <span>Logout</span>
+
+        </a>
+
+        <div class="user">
+
+            👤 {{ user_name }}
+
+            <span>
+                Protected Account
+            </span>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main"
+          id="dashboard">
+
+        <div class="top">
+
+            <div>
+
+                <small>
+                    AI SECURITY PLATFORM
+                </small>
+
+                <h1>
+                    Privacy Command Center
+                </h1>
+
+            </div>
+
+            <div class="system-status">
+                ● SYSTEM OPERATIONAL
+            </div>
+
+        </div>
+
+
+        <div class="hero">
+
+            <small>
+                REAL-TIME INTELLIGENT PROTECTION
+            </small>
+
+            <h2>
+                Welcome, {{ user_name }} 👋
+            </h2>
+
+            <p>
+                AI Privacy Shield automatically monitors
+                people around your screen. When another
+                person is detected, the screen is blurred
+                and a privacy alert is generated.
+            </p>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <small>
+                    PERSONS DETECTED
+                </small>
+
+                <strong
+                    class="blue"
+                    id="personCountTop">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>
+                    AI CONFIDENCE
+                </small>
+
+                <strong
+                    class="green"
+                    id="confidenceTop">
+
+                    0%
+
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>
+                    PRIVACY ALERTS
+                </small>
+
+                <strong
+                    class="red"
+                    id="alertCount">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>
+                    MONITOR TIME
+                </small>
+
+                <strong id="timer">
+                    00:00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- CAMERA -->
+
+            <div class="panel"
+                 id="monitor">
+
+                <div class="panel-header">
+
+                    <small>
+                        COMPUTER VISION
+                    </small>
+
+                    <h3>
+                        Live Person Detection
+                    </h3>
+
+                </div>
+
+
+                <div class="camera-area">
+
+                    <video
+                        id="video"
+                        autoplay
+                        muted
+                        playsinline>
+                    </video>
+
+
+                    <canvas
+                        id="canvas">
+                    </canvas>
+
+
+                    <!-- PLACEHOLDER -->
+
+                    <div
+                        id="cameraPlaceholder"
+                        class="camera-placeholder">
+
+                        <div class="camera-icon">
+                            📷
+                        </div>
+
+                        <h3>
+                            Camera Monitoring
+                        </h3>
+
+                        <p>
+                            Start protection to activate
+                            real-time AI person detection.
+                        </p>
+
+                        <button
+                            id="cameraStartButton"
+                            class="camera-start">
+
+                            📷 Start Camera
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="camera-status">
+
+                        AI:
+                        <b id="aiStatus">
+                            LOADING
+                        </b>
+
+                    </div>
+
+
+                    <!-- SAFE -->
+
+                    <div
+                        id="safeBox"
+                        class="safe-box">
+
+                        ✓
+                        Privacy environment is safe
+
+                    </div>
+
+
+                    <!-- WARNING -->
+
+                    <div
+                        id="warningBox"
+                        class="warning-box"
+                        style="display:none;">
+
+                        ⚠ Privacy threat detected
+
+                    </div>
+
+
+                    <!-- BLUR -->
+
+                    <div
+                        id="blurLabel"
+                        class="blur-label"
+                        style="display:none;">
+
+                        🔒 SCREEN PROTECTED
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- AI CONTROL -->
+
+            <div class="panel"
+                 id="ai">
+
+                <div class="panel-header">
+
+                    <small>
+                        INTELLIGENCE CORE
+                    </small>
+
+                    <h3>
+                        AI Protection Engine
+                    </h3>
+
+                </div>
+
+
+                <div class="control">
+
+
+                    <div class="engine">
+
+                        <strong>
+                            🧠 Person Detection AI
+                        </strong>
+
+                        <span>
+                            TensorFlow.js + COCO-SSD
+                        </span>
+
+                    </div>
+
+
+                    <div class="face-panel">
+
+                        <div class="face-title">
+
+                            <span>
+                                👥 PERSON DETECTION
+                            </span>
+
+                            <span id="detectionStatus">
+                                LOADING
+                            </span>
+
+                        </div>
+
+
+                        <div class="face-stats">
+
+                            <div class="face-stat">
+
+                                <small>
+                                    PERSONS
+                                </small>
+
+                                <strong
+                                    id="personCount">
+
+                                    0
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="face-stat">
+
+                                <small>
+                                    CONFIDENCE
+                                </small>
+
+                                <strong
+                                    id="confidence">
+
+                                    0%
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="face-stat">
+
+                                <small>
+                                    SECURITY
+                                </small>
+
+                                <strong
+                                    id="securityStatus"
+                                    class="green">
+
+                                    SAFE
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="buttons">
+
+                        <button
+                            id="startButton">
+
+                            ▶ START PROTECTION
+
+                        </button>
+
+
+                        <button
+                            id="stopButton"
+                            disabled>
+
+                            ■ STOP PROTECTION
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        style="
+                        margin-top:15px;
+                        color:#60788d;
+                        font-size:9px;
+                        line-height:1.7;
+                        ">
+
+                        <b style="color:#c2d6e5;">
+                            Privacy Rule
+                        </b>
+
+                        <br>
+
+                        1 person = 🟢 Safe
+
+                        <br>
+
+                        2 or more people =
+                        🔴 Privacy Threat
+
+                        <br>
+
+                        Threat detected =
+                        Screen Blur + Alert
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERT HISTORY -->
+
+        <div
+            class="panel alerts"
+            id="alerts">
+
+            <div class="panel-header">
+
+                <small>
+                    SECURITY EVENTS
+                </small>
+
+                <h3>
+                    Privacy Alert History
+                </h3>
+
+            </div>
+
+
+            <div
+                class="alert-list"
+                id="alertHistory">
+
+                <div
+                    class="alert-item"
+                    id="emptyAlert">
+
+                    <div class="alert-icon">
+                        ✓
+                    </div>
+
+                    <div class="alert-info">
+
+                        <strong>
+                            No privacy threats detected
+                        </strong>
+
+                        <span>
+                            AI monitoring is ready.
+                        </span>
+
+                    </div>
+
+                    <div class="alert-time">
+                        SAFE
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- TENSORFLOW -->
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js">
+</script>
+
+
+<!-- COCO SSD -->
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js">
+</script>
+
+
+<!-- OUR JAVASCRIPT -->
+
+<script src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+
+</body>
+
+</html>
