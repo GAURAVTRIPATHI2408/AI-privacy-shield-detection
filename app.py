@@ -1,16 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import hashlib
+import os
 
 app = Flask(__name__)
 
-app.secret_key = "ai_privacy_shield_secret_2026"
+# ==========================================
+# SECRET KEY
+# ==========================================
 
-DATABASE = "database.db"
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "ai_privacy_shield_secret_2026"
+)
+
+# ==========================================
+# DATABASE PATH
+# ==========================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database.db")
 
 
 # ==========================================
-# DATABASE
+# DATABASE CONNECTION
 # ==========================================
 
 def get_db():
@@ -18,6 +31,10 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+# ==========================================
+# INITIALIZE DATABASE
+# ==========================================
 
 def init_db():
 
@@ -34,6 +51,11 @@ def init_db():
 
     conn.commit()
     conn.close()
+
+
+# IMPORTANT:
+# Render/Gunicorn app load karte waqt bhi database create ho
+init_db()
 
 
 # ==========================================
@@ -56,17 +78,13 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
-    # Registration form submit hua
     if request.method == "POST":
 
         name = request.form.get("name", "").strip()
-
         email = request.form.get("email", "").strip().lower()
-
         password = request.form.get("password", "")
 
-
-        # Empty field check
+        # Check empty fields
         if not name or not email or not password:
 
             flash(
@@ -76,15 +94,12 @@ def register():
 
             return redirect(url_for("register"))
 
-
         # Password hash
         hashed_password = hashlib.sha256(
-            password.encode()
+            password.encode("utf-8")
         ).hexdigest()
 
-
         conn = get_db()
-
 
         try:
 
@@ -102,9 +117,7 @@ def register():
             )
 
             conn.commit()
-
             conn.close()
-
 
             flash(
                 "Registration successful! Please login.",
@@ -112,7 +125,6 @@ def register():
             )
 
             return redirect(url_for("login"))
-
 
         except sqlite3.IntegrityError:
 
@@ -125,11 +137,18 @@ def register():
 
             return redirect(url_for("register"))
 
+        except Exception as e:
 
-    # ======================================
-    # IMPORTANT
-    # GET REQUEST KE LIYE YE RETURN HAI
-    # ======================================
+            conn.close()
+
+            print("REGISTER ERROR:", e)
+
+            flash(
+                "Registration failed.",
+                "error"
+            )
+
+            return redirect(url_for("register"))
 
     return render_template("register.html")
 
@@ -153,7 +172,7 @@ def login():
             ""
         )
 
-
+        # Empty fields
         if not email or not password:
 
             flash(
@@ -163,46 +182,62 @@ def login():
 
             return redirect(url_for("login"))
 
-
+        # Hash password
         hashed_password = hashlib.sha256(
-            password.encode()
+            password.encode("utf-8")
         ).hexdigest()
-
 
         conn = get_db()
 
+        try:
 
-        user = conn.execute(
-            """
-            SELECT *
-            FROM users
-            WHERE email = ?
-            AND password = ?
-            """,
-            (
-                email,
-                hashed_password
+            user = conn.execute(
+                """
+                SELECT *
+                FROM users
+                WHERE email = ?
+                AND password = ?
+                """,
+                (
+                    email,
+                    hashed_password
+                )
+            ).fetchone()
+
+            conn.close()
+
+        except Exception as e:
+
+            conn.close()
+
+            print("LOGIN DATABASE ERROR:", e)
+
+            flash(
+                "Database error. Please try again.",
+                "error"
             )
-        ).fetchone()
 
+            return redirect(url_for("login"))
 
-        conn.close()
-
-
+        # User found
         if user:
 
+            session.clear()
+
             session["user_id"] = user["id"]
-
             session["user_name"] = user["name"]
-
             session["user_email"] = user["email"]
 
+            print(
+                "LOGIN SUCCESS:",
+                user["email"]
+            )
 
             return redirect(
                 url_for("dashboard")
             )
 
-
+        # Wrong credentials
         flash(
             "Invalid email or password.",
             "error"
@@ -212,8 +247,6 @@ def login():
             url_for("login")
         )
 
-
-    # GET request
     return render_template("login.html")
 
 
@@ -224,22 +257,23 @@ def login():
 @app.route("/dashboard")
 def dashboard():
 
+    # Login check
     if "user_id" not in session:
 
         return redirect(
             url_for("login")
         )
 
-
+    # Dashboard open
     return render_template(
         "dashboard.html",
-
         user_name=session.get(
-            "user_name"
+            "user_name",
+            "User"
         ),
-
         user_email=session.get(
-            "user_email"
+            "user_email",
+            ""
         )
     )
 
@@ -264,29 +298,59 @@ def logout():
 
 
 # ==========================================
-# START SERVER
+# HEALTH CHECK
+# ==========================================
+
+@app.route("/health")
+def health():
+
+    return {
+        "status": "ok",
+        "application": "AI Privacy Shield"
+    }
+
+
+# ==========================================
+# ERROR HANDLER
+# ==========================================
+
+@app.errorhandler(500)
+def internal_error(error):
+
+    print(
+        "INTERNAL SERVER ERROR:",
+        error
+    )
+
+    return """
+    <h1>AI Privacy Shield</h1>
+    <h2>Internal Server Error</h2>
+    <p>Please check the Render logs.</p>
+    """, 500
+
+
+# ==========================================
+# LOCAL SERVER
 # ==========================================
 
 if __name__ == "__main__":
 
-    init_db()
+    port = int(
+        os.environ.get(
+            "PORT",
+            5000
+        )
+    )
 
-    print("")
     print("======================================")
-    print("        AI PRIVACY SHIELD")
+    print("       AI PRIVACY SHIELD")
     print("======================================")
-    print("")
-    print("Server running at:")
-    print("http://127.0.0.1:5000")
-    print("")
-    print("Flow:")
-    print("Register -> Login -> Dashboard")
-    print("")
+    print("Server starting...")
+    print("Port:", port)
     print("======================================")
-
 
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True
+        host="0.0.0.0",
+        port=port,
+        debug=False
     )
